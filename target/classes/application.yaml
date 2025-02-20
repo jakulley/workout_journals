@@ -1,0 +1,10 @@
+spring:
+   datasource:
+      username: workout_journals
+      password: workout_journals
+      url: jdbc:mysql://localhost:3306/workout_journals
+      
+   jpa:
+      hibernate:
+         ddl-auto: create
+      show-sql: true
