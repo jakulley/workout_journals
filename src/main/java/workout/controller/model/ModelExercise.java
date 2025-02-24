@@ -1,6 +1,6 @@
 package workout.controller.model;
 
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Data;
@@ -12,17 +12,18 @@ import workout.entity.Exercise;
 @NoArgsConstructor
 public class ModelExercise {
 	private Long exercise_id;
-	private String exerciseName;
+	private String exercise_name;
 	private Boolean compound;
-	private Set<Category> categories;
+	private Set<ModelCategory> categories = new HashSet<ModelCategory>();
 	
 	public ModelExercise(Exercise exercise) {
 		this.exercise_id = exercise.getExercise_id();
-		this.exerciseName = exercise.getExerciseName();
+		this.exercise_name = exercise.getExercise_name();
 		this.compound = exercise.getCompound();
-		if (Objects.nonNull(exercise.getCategories())) {
+		if (exercise.getCategories() != null) {
 			for(Category category : exercise.getCategories()) {
-				this.categories.add(category);
+				ModelCategory modelCategory = new ModelCategory(category);
+				this.categories.add(modelCategory);
 			}
 		}
 	}

@@ -1,13 +1,15 @@
 package workout.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -20,11 +22,13 @@ public class CardioExerciseSet {
 	private Long cardio_exercise_set_id;
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonBackReference  
+	@ManyToOne
+	@JoinColumn(name = "workout_id", nullable = false)
 	private Workout workout;
 	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ToString.Exclude  
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Exercise exercise;
 	private Long duration;
 	private Long avgHR;

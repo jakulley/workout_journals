@@ -8,29 +8,31 @@ import workout.entity.Workout;
 
 @Data
 @NoArgsConstructor
-public class WorkoutExerciseSet {
+public class ModelExerciseSet {
 
 	private Long exercise_set_id;
-	private Workout workout;
-	private Exercise exercise;
+	private Long workout_id;
+	private ModelExercise exercise;
 	private Integer reps;
 	private Integer weight;
 	private Boolean superset;
 	private Boolean failure;
-	private Boolean twoSides;
-	private Boolean bodyWeight;
+	private Boolean two_sides;
+	private Boolean bodyweight;
 	private String notes;
 	
-	public WorkoutExerciseSet(ExerciseSet exerciseSet) {
+	public ModelExerciseSet(ExerciseSet exerciseSet) {
 		this.exercise_set_id = exerciseSet.getExercise_set_id();
-		this.workout = exerciseSet.getWorkout();
-		this.exercise = exerciseSet.getExercise();
+		this.workout_id = exerciseSet.getWorkout().getWorkout_id();
+		if (exerciseSet.getExercise() != null) {
+			this.exercise = new ModelExercise(exerciseSet.getExercise());
+		}
 		this.reps = exerciseSet.getReps();
 		this.weight = exerciseSet.getWeight();
 		this.superset = exerciseSet.getSuperset();
 		this.failure = exerciseSet.getFailure();
-		this.twoSides = exerciseSet.getTwoSides();
-		this.bodyWeight = exerciseSet.getBodyWeight();
+		this.two_sides = exerciseSet.getTwo_sides();
+		this.bodyweight = exerciseSet.getBodyweight();
 		this.notes = exerciseSet.getNotes();
 	}
 }

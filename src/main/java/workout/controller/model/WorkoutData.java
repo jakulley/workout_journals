@@ -1,6 +1,6 @@
 package workout.controller.model;
 
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Data;
@@ -16,48 +16,29 @@ public class WorkoutData {
 	private Long workout_id;
 	private String notes;
 	private String date;
-	private Set<ExerciseSet> exerciseSets;
-	private Set<CardioExerciseSet> cardioExerciseSets;
+	private Set<ModelExerciseSet> exerciseSets = new HashSet<ModelExerciseSet>();
+	private Set<ModelCardioExerciseSet> cardioExerciseSets = new HashSet<ModelCardioExerciseSet>();
 	
 	public WorkoutData(Workout workout) {
-		this.workout_id = workout.getWorkout_id();
-		this.date = workout.getDate();
-		this.notes = workout.getNotes();
-		if (Objects.nonNull(workout.getExerciseSets())) {
-			for (ExerciseSet exerciseSet : workout.getExerciseSets()) {
-				this.exerciseSets.add(exerciseSet);
-			}
-		}
-		if (Objects.nonNull(workout.getCardioExerciseSets())) {
-			for (CardioExerciseSet cardioeExerciseSet : workout.getCardioExerciseSets()) {
-				this.cardioExerciseSets.add(cardioeExerciseSet);
-			}
-		}
-	}
+        this.workout_id = workout.getWorkout_id();
+        this.date = workout.getDate();
+        this.notes = workout.getNotes();
+        
+        this.exerciseSets = new HashSet<>(); // ✅ Ensure non-null collection
+        if (workout.getExerciseSets() != null) {
+            for (ExerciseSet set : workout.getExerciseSets()) {
+            	ModelExerciseSet modelExerciseSet = new ModelExerciseSet(set);
+                this.exerciseSets.add(modelExerciseSet);  // ✅ Convert to DTO
+            }
+        }
+
+        this.cardioExerciseSets = new HashSet<>(); // ✅ Ensure non-null collection
+        if (workout.getCardioExerciseSets() != null) {
+            for (CardioExerciseSet set : workout.getCardioExerciseSets()) {
+            	ModelCardioExerciseSet modelCardioExerciseSet = new ModelCardioExerciseSet(set);
+                this.cardioExerciseSets.add(modelCardioExerciseSet);  // ✅ Convert to DTO
+            }
+        }
+    }
 	
-	@Data
-	@NoArgsConstructor
-	static class WorkoutResponse {
-		private Long workout_id;
-		private String date;
-		private String notes;
-		private Set<ExerciseSet> exerciseSets;
-		private Set<CardioExerciseSet> cardioExerciseSets;
-		
-		WorkoutResponse(Workout workout) {
-			this.workout_id = workout.getWorkout_id();
-			this.date = workout.getDate();
-			this.notes = workout.getNotes();
-			if (Objects.nonNull(workout.getExerciseSets())) {
-				for (ExerciseSet exerciseSet : workout.getExerciseSets()) {
-					this.exerciseSets.add(exerciseSet);
-				}
-			}
-			if (Objects.nonNull(workout.getCardioExerciseSets())) {
-				for (CardioExerciseSet cardioeExerciseSet : workout.getCardioExerciseSets()) {
-					this.cardioExerciseSets.add(cardioeExerciseSet);
-				}
-			}
-		}
-	}
 }
